@@ -1,0 +1,46 @@
+# Python
+__pycache__/
+*.py[cod]
+.python-version
+!dagster/.python-version
+.venv/
+venv/
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Local source data
+sources/*.csv
+!sources/.gitkeep
+
+# Dagster
+dagster/storage/
+dagster/history/
+dagster/logs/
+dagster/schedules/
+dagster/.logs_queue/
+dagster/.nux/
+dagster/.telemetry/
+*.db
+
+# dbt
+dbt_project/target/
+dbt_project/dbt_packages/
+dbt_project/logs/
+dbt_project/.user.yml
+
+# Terraform
+terraform/.terraform/
+terraform/*.tfstate
+terraform/*.tfstate.*
+terraform/*.tfvars
+!terraform/terraform.tfvars.example
+terraform/crash.log
+terraform/crash.*.log
+
+# OS and editors
+.DS_Store
+.idea/
+.vscode/

@@ -1,0 +1,17 @@
+[project]
+name = "aeropulse-dagster"
+version = "0.1.0"
+description = "Dagster orchestration project for AeroPulse."
+requires-python = ">=3.11,<3.12"
+dependencies = [
+    "clickhouse-connect",
+    "dagster",
+    "dagster-dbt",
+    "dagster-webserver",
+    "dbt-clickhouse",
+    "dbt-core",
+]
+
+[tool.uv]
+package = false
+

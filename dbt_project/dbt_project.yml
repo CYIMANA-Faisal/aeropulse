@@ -1,0 +1,22 @@
+name: aeropulse
+version: "1.0.0"
+config-version: 2
+
+profile: aeropulse
+
+model-paths: ["models"]
+macro-paths: ["macros"]
+
+target-path: target
+clean-targets:
+  - target
+  - dbt_packages
+
+models:
+  aeropulse:
+    staging:
+      +materialized: view
+      +schema: aeropulse_staging
+    marts:
+      +materialized: table
+      +schema: aeropulse_analytics

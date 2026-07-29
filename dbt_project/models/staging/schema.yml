@@ -1,0 +1,49 @@
+version: 2
+
+sources:
+  - name: raw
+    schema: aeropulse_raw
+    tables:
+      - name: airports
+        columns:
+          - name: airport_code
+            tests:
+              - not_null
+              - unique
+      - name: flights
+        columns:
+          - name: flight_id
+            tests:
+              - not_null
+              - unique
+      - name: airline_delay_causes
+        columns:
+          - name: airport
+            tests:
+              - not_null
+
+models:
+  - name: stg_airports
+    columns:
+      - name: airport_code
+        tests:
+          - not_null
+          - unique
+  - name: stg_flights
+    columns:
+      - name: flight_id
+        tests:
+          - not_null
+          - unique
+      - name: origin_airport_code
+        tests:
+          - relationships:
+              arguments:
+                to: ref('stg_airports')
+                field: airport_code
+      - name: destination_airport_code
+        tests:
+          - relationships:
+              arguments:
+                to: ref('stg_airports')
+                field: airport_code

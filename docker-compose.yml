@@ -1,0 +1,91 @@
+services:
+  clickhouse:
+    image: clickhouse/clickhouse-server:latest
+    environment:
+      CLICKHOUSE_USER: aeropulse
+      CLICKHOUSE_PASSWORD: aeropulse
+      CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT: "1"
+    ports:
+      - "8123:8123"
+      - "9000:9000"
+    volumes:
+      - clickhouse_data:/var/lib/clickhouse
+      - clickhouse_logs:/var/log/clickhouse-server
+    ulimits:
+      nofile:
+        soft: 262144
+        hard: 262144
+    healthcheck:
+      test: ["CMD-SHELL", "clickhouse-client --user aeropulse --password aeropulse --query 'select 1'"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  dagster:
+    build:
+      context: ./dagster
+      dockerfile: Dockerfile
+    image: aeropulse-dagster:local
+    working_dir: /opt/dagster
+    command: >
+      sh -c "uv sync --locked --no-dev &&
+      { uv run dagster-daemon run -w workspace.yaml &
+      exec uv run dagster-webserver -h 0.0.0.0 -p 3000 -w workspace.yaml; }"
+    environment:
+      DAGSTER_HOME: /opt/dagster
+      DBT_PROFILES_DIR: /opt/dbt_project
+      PYTHONDONTWRITEBYTECODE: "1"
+      PYTHONUNBUFFERED: "1"
+      CLICKHOUSE_DATABASE: aeropulse_analytics
+      CLICKHOUSE_RAW_DATABASE: aeropulse_raw
+      CLICKHOUSE_USER: aeropulse
+      CLICKHOUSE_PASSWORD: aeropulse
+      CLICKHOUSE_HOST: clickhouse
+      CLICKHOUSE_HTTP_PORT: "8123"
+      CLICKHOUSE_NATIVE_PORT: "9000"
+      SOURCES_DIR: /opt/sources
+      AIRPORTS_SOURCE_FILE: ${AIRPORTS_SOURCE_FILE:-/opt/sources/airports.csv}
+      FLIGHTS_SOURCE_FILE: ${FLIGHTS_SOURCE_FILE:-/opt/sources/flight_data_2024.csv}
+      DELAY_CAUSES_SOURCE_FILE: ${DELAY_CAUSES_SOURCE_FILE:-/opt/sources/Airline_Delay_Cause.csv}
+      SOURCE_BATCH_SIZE: ${SOURCE_BATCH_SIZE:-50000}
+      FLIGHTS_SOURCE_LIMIT: ${FLIGHTS_SOURCE_LIMIT:-0}
+      DELAY_CAUSES_SOURCE_LIMIT: ${DELAY_CAUSES_SOURCE_LIMIT:-0}
+      AIRPORTS_API_URL: ${AIRPORTS_API_URL-}
+      AIRPORTS_API_DATA_PATH: ${AIRPORTS_API_DATA_PATH-}
+      AIRPORTS_API_LIMIT: ${AIRPORTS_API_LIMIT:-500}
+      FLIGHTS_API_URL: ${FLIGHTS_API_URL-}
+      FLIGHTS_API_DATA_PATH: ${FLIGHTS_API_DATA_PATH-}
+      FLIGHTS_API_LIMIT: ${FLIGHTS_API_LIMIT:-500}
+      API_KEY: ${API_KEY-}
+      API_HEADER_NAME: ${API_HEADER_NAME:-Authorization}
+      API_AUTH_SCHEME: ${API_AUTH_SCHEME-Bearer}
+      API_TIMEOUT_SECONDS: ${API_TIMEOUT_SECONDS:-20}
+      API_FALLBACK_TO_SAMPLE: ${API_FALLBACK_TO_SAMPLE:-true}
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./dagster:/opt/dagster
+      - ./dbt_project:/opt/dbt_project
+      - ./sources:/opt/sources:ro
+    depends_on:
+      clickhouse:
+        condition: service_healthy
+
+  metabase:
+    image: metabase/metabase:latest
+    environment:
+      MB_DB_FILE: /metabase-data/metabase.db
+      MB_SITE_URL: http://localhost:3001
+      JAVA_TIMEZONE: UTC
+    ports:
+      - "3001:3000"
+    volumes:
+      - metabase_data:/metabase-data
+    depends_on:
+      clickhouse:
+        condition: service_healthy
+
+volumes:
+  clickhouse_data:
+  clickhouse_logs:
+  metabase_data:
