@@ -1,0 +1,14 @@
+local_artifact_storage:
+  module: dagster._core.storage.root
+  class: LocalArtifactStorage
+  config:
+    base_dir: /opt/dagster/storage
+
+run_coordinator:
+  module: dagster._core.run_coordinator
+  class: QueuedRunCoordinator
+
+run_launcher:
+  module: dagster._core.launcher
+  class: DefaultRunLauncher
+

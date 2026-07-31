@@ -1,0 +1,24 @@
+# This file is maintained automatically by "terraform init".
+# Manual edits may be lost in future updates.
+
+provider "registry.terraform.io/clickhouse/clickhousedbops" {
+  version     = "1.10.0"
+  constraints = "1.10.0"
+  hashes = [
+    "h1:iPpDEkSHKTMPxNkwXU+O0GRDm49yOlILYHPSQldwL0Y=",
+    "zh:138ca02599462aef09d6c472a218fe65bab7c91a131ea219f9a31544aad34f3d",
+    "zh:1cff4a37417e72909764835d5589cea86a38909af0cc93f3049052f6f6412465",
+    "zh:25922e02f14a4d28815d7e17cef4256012bd6259bf54d2dec542a30d6bd12c23",
+    "zh:689f141b92004f24e42b549a4f8d340210fdade0a8fd4d54b92a7994d986c90a",
+    "zh:6a1d6043677ba75bd45ebf2113d37998734333f33dc32ab5d74b6c2c6719a4a2",
+    "zh:710139b421a2505ba4ec9ec79090c2726695ff5b5a35b42779d18fcf55e1c643",
+    "zh:71f68dc24f778f0ba680b2eb5a38a84ed130c55d9d4fa4a75960dc84b92e8208",
+    "zh:831e3f4828865c9903d9fc023f806278aa99d91f68025e92309076de5922abb4",
+    "zh:890df766e9b839623b1f0437355032a3c006226a6c200cd911e15ee1a9014e9f",
+    "zh:b73007b5ff555f37b87f306717d855a94a3e90554645e0c82f54ad4835be2863",
+    "zh:cef824ba183322b0e65c36348a42fa0c4ba7cb6296b1d6391afa47133e3346b3",
+    "zh:dac65ba3112d5ed46837b8e9595bb5a9ad42b2b46c6e49e73ac4be351ec500d9",
+    "zh:e05a3a9b5c9542660ff5e60610c69f5af7f004d3556ff84c48c52848d573d594",
+    "zh:e3b22f4f2d7a84a7ae3cb516022ee4160e95ae7ad20c078eba7526c565a1d0fe",
+  ]
+}

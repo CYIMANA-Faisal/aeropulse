@@ -1,0 +1,11 @@
+clickhouse_host     = "localhost"
+clickhouse_port     = 9000
+clickhouse_protocol = "native"
+clickhouse_username = "aeropulse"
+clickhouse_password = "aeropulse"
+
+schema_names = [
+  "aeropulse_raw",
+  "aeropulse_staging",
+  "aeropulse_analytics",
+]

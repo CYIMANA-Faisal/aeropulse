@@ -1,0 +1,22 @@
+version: 2
+
+models:
+  - name: dim_airports
+    columns:
+      - name: airport_code
+        tests:
+          - not_null
+          - unique
+  - name: fct_flights
+    columns:
+      - name: flight_id
+        tests:
+          - not_null
+          - unique
+      - name: origin_airport_code
+        tests:
+          - not_null
+      - name: destination_airport_code
+        tests:
+          - not_null
+

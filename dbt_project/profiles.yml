@@ -1,0 +1,12 @@
+aeropulse:
+  target: dev
+  outputs:
+    dev:
+      type: clickhouse
+      host: "{{ env_var('CLICKHOUSE_HOST', 'localhost') }}"
+      port: "{{ env_var('CLICKHOUSE_HTTP_PORT', '8123') | int }}"
+      user: "{{ env_var('CLICKHOUSE_USER', 'aeropulse') }}"
+      password: "{{ env_var('CLICKHOUSE_PASSWORD', 'aeropulse') }}"
+      schema: aeropulse_analytics
+      secure: false
+      threads: 4
